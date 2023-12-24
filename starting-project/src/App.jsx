@@ -11,8 +11,13 @@ const cards = [
 ];
 
 function App() {
+  const [modalIsVisible, setModalIsVisible] = useState(true);
   const [enteredBody, setEnteredBody] = useState("");
   const [enteredAuthor, setEnteredAuthor] = useState("");
+
+  const hideModalHandler = () => {
+    setModalIsVisible(false);
+  };
 
   const bodyChangeHandler = (event) => {
     setEnteredBody(event.target.value);
@@ -24,12 +29,14 @@ function App() {
 
   return (
     <>
-      <Modal>
-        <NewPost
-          onBodyChange={bodyChangeHandler}
-          onAuthorChange={authorChangeHandler}
-        />
-      </Modal>
+      {modalIsVisible ? (
+        <Modal onClose={hideModalHandler}>
+          <NewPost
+            onBodyChange={bodyChangeHandler}
+            onAuthorChange={authorChangeHandler}
+          />
+        </Modal>
+      ) : null}
       <ul className={classes.post}>
         <Post author={enteredAuthor} message={enteredBody} />
         <PostList cards={cards} />
