@@ -1,10 +1,25 @@
+import { useState } from "react";
+import MainHeader from "./components/mainHeader/MainHeader";
 import PostList from "./components/postList/PostList";
 
 function App() {
+  const [modalIsVisible, setModalIsVisible] = useState(true);
+
+  const showModalHandler = () => {
+    setModalIsVisible(true);
+  };
+
+  const hideModalHandler = () => {
+    setModalIsVisible(false);
+  };
+
   return (
-    <main>
-      <PostList />
-    </main>
+    <>
+      <MainHeader onCreatePost={showModalHandler} />
+      <main>
+        <PostList isPosting={modalIsVisible} onStopPosting={hideModalHandler} />
+      </main>
+    </>
   );
 }
 

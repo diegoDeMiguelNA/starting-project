@@ -9,36 +9,23 @@ const cards = [
   { author: "Bob", message: "Hi" },
 ];
 
-export default function PostList() {
-  const [modalIsVisible, setModalIsVisible] = useState(true);
-  const [enteredBody, setEnteredBody] = useState("");
-  const [enteredAuthor, setEnteredAuthor] = useState("");
+export default function PostList({ isPosting, onStopPosting }) {
+  const [posts, setPosts] = useState(cards);
 
-  const hideModalHandler = () => {
-    setModalIsVisible(false);
+  const addPostHandler = (postData) => {
+    setPosts((existingPosts) => [postData, ...existingPosts]);
   };
 
-  const bodyChangeHandler = (event) => {
-    setEnteredBody(event.target.value);
-  };
-
-  const authorChangeHandler = (event) => {
-    setEnteredAuthor(event.target.value);
-  };
   return (
     <>
-      {modalIsVisible ? (
-        <Modal onClose={hideModalHandler}>
-          <NewPost
-            onBodyChange={bodyChangeHandler}
-            onAuthorChange={authorChangeHandler}
-          />
+      {isPosting ? (
+        <Modal onClose={onStopPosting}>
+          <NewPost onCancel={onStopPosting} onAddPost={addPostHandler} />
         </Modal>
       ) : null}
       <ul className={classes.posts}>
-        <Post author={enteredAuthor} message={enteredBody} />
-        {cards.map((card) => (
-          <Post key={card.author} author={card.author} message={card.message} />
+        {posts.map((post) => (
+          <Post key={post.author} author={post.author} message={post.message} />
         ))}
       </ul>
     </>

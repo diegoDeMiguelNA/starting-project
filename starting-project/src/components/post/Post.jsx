@@ -1,10 +1,10 @@
 import classes from "./Post.module.css";
 
-export default function Post(props) {
+export default function Post({ author, message }) {
   return (
     <li className={classes.post}>
-      <p className={classes.author}>{props.author}</p>
-      <p className={classes.text}>{props.message}</p>
+      <p className={classes.author}>{author}</p>
+      <p className={classes.text}>{message}</p>
     </li>
   );
 }
