@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Post from "../Post/Post";
 import Modal from "../modal/Modal";
 import NewPost from "../newPost/NewPost";
@@ -7,9 +7,25 @@ import classes from "./PostList.module.css";
 export default function PostList({ isPosting, onStopPosting }) {
   const [posts, setPosts] = useState([]);
 
-  const addPostHandler = (postData) => {
+  useEffect(() => {
+    const getAllPosts = async () => {
+      const response = await fetch("http://localhost:8080/posts");
+      const postsData = await response.json();
+      if (postsData && postsData.posts) setPosts(postsData.posts);
+    };
+    getAllPosts();
+  }, []);
+
+  function addPostHandler(postData) {
+    fetch("http://localhost:8080/posts", {
+      method: "POST",
+      body: JSON.stringify(postData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     setPosts((existingPosts) => [postData, ...existingPosts]);
-  };
+  }
 
   return (
     <>
@@ -22,7 +38,7 @@ export default function PostList({ isPosting, onStopPosting }) {
         <ul className={classes.posts}>
           {posts.map((post) => (
             <Post
-              key={post.author}
+              key={Math.random(post.id)}
               author={post.author}
               message={post.message}
             />
