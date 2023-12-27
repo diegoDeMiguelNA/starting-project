@@ -6,14 +6,18 @@ import classes from "./PostList.module.css";
 
 export default function PostList({ isPosting, onStopPosting }) {
   const [posts, setPosts] = useState([]);
+  const [fetching, setFetching] = useState(false);
+  console.log("fetching", fetching);
 
   useEffect(() => {
+    setFetching(true);
     const getAllPosts = async () => {
       const response = await fetch("http://localhost:8080/posts");
       const postsData = await response.json();
       if (postsData && postsData.posts) setPosts(postsData.posts);
     };
     getAllPosts();
+    setFetching(false);
   }, []);
 
   function addPostHandler(postData) {
@@ -34,7 +38,7 @@ export default function PostList({ isPosting, onStopPosting }) {
           <NewPost onCancel={onStopPosting} onAddPost={addPostHandler} />
         </Modal>
       ) : null}
-      {posts.length > 0 ? (
+      {!fetching && posts.length > 0 && (
         <ul className={classes.posts}>
           {posts.map((post) => (
             <Post
@@ -44,10 +48,16 @@ export default function PostList({ isPosting, onStopPosting }) {
             />
           ))}
         </ul>
-      ) : (
+      )}
+      {!fetching && posts.length < 0 && (
         <div className={classes.empty}>
           <p>No posts yet</p>
           <p>Add your first post!</p>
+        </div>
+      )}
+      {fetching && (
+        <div className={classes.empty} style={{ color: "white;" }}>
+          <p>Loading...</p>
         </div>
       )}
     </>

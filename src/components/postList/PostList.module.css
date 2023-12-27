@@ -7,10 +7,12 @@
   gap: 1rem;
   grid-template-columns: repeat(3, 30%);
   justify-content: center;
+  font-weight: bold;
+  color: #ffffff;
 }
 
 .empty {
   text-align: center;
   font-size: 2rem;
-  color: #c4a9e4;
+  color: #ffffff;
 }
