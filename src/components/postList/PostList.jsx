@@ -14,6 +14,7 @@ export default function PostList() {
               key={Math.random(post.id)}
               author={post.author}
               message={post.message}
+              id={post.id}
             />
           ))}
         </ul>
